@@ -1,0 +1,48 @@
+service:
+  name: serverless
+# app and org for use with dashboard.serverless.com
+app: my-first-app
+org: ramaniakhil094
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+# Add the serverless-webpack plugin
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    DB_URL: mongodb://localhost:27017/serverless
+
+functions:
+  hello:
+    handler: src/handler.hello
+    events:
+      - http:
+          method: get
+          path: hello
+
+  app:
+    handler: src/handler.express
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /user/save
+          method: POST
+          cors: true
+      - http: 
+          path: /{proxy+}
+          method: ANY
+          cors: true
