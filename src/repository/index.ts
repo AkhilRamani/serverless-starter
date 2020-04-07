@@ -1,5 +1,5 @@
-import {UserRepository} from './user/user.repository'
+import {UserRepo} from './user/user.repository'
 
 export {
-    UserRepository
+    UserRepo
 }

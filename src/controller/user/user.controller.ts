@@ -1,22 +1,20 @@
-import { Request, Response, NextFunction } from "express";
 import { UserModel } from "../../schema";
-import { UserRepository } from "../../repository";
-import { connectToDB } from "../../common/dbConnecter";
+import { UserRepo } from "../../repository";
+import { lambdaHelper, formateResponse} from '../../helpers'
 
 export class UserController{
-     createUser = async (req: Request, res: Response, next: NextFunction) => {
-        try{
-            await connectToDB()
+    static createUser = lambdaHelper(async (req) => {
+        const data: UserModel = req.body
+        
+        const doc = await UserRepo.save(data)
+        return formateResponse(doc)
+    })
 
-            const data: UserModel = req.body
-            const userRepo = new UserRepository()
+    static getUser = lambdaHelper(async (req) => UserRepo.getOne(req.params.id))
 
-            const doc = await userRepo.save(data)
-            res.json(doc)
-        }
-        catch(e){
-            console.log(e)
-            res.status(e.code || 400).send({message: e.message})
-        }
-     } 
+    static deleteUser = lambdaHelper(async (req) => {
+        const id: string = req.params.id
+        const deletedDoc = await UserRepo.delete(id)
+        return formateResponse(deletedDoc)
+    })
 }
