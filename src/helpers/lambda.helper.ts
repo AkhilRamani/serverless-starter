@@ -7,7 +7,7 @@ type AsyncFunction = (req: Request, res: Response, next: NextFunction) => Promis
 // export const asyncHandler = (execution: AsyncFunction) => (req: Request, res: Response, next:NextFunction) => execution(req, res, next).catch(e => errorHandler(e, res))
 
 
-export const lambdaHelper = (execution: AsyncFunction) => async (req: Request, res: Response, next:NextFunction) => {
+export const lambdaHandler = (execution: AsyncFunction) => async (req: Request, res: Response, next:NextFunction) => {
     try{
         await connectToDB()
         const resData: {code: number, payload: object | null} = await execution(req, res, next)
