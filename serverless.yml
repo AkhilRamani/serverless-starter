@@ -1,7 +1,7 @@
 service:
   name: serverless
 # app and org for use with dashboard.serverless.com
-app: my-first-app
+app: diamond-erp
 org: ramaniakhil094
 
 custom:
@@ -42,7 +42,11 @@ functions:
           path: /user/save
           method: POST
           cors: true
-      - http: 
-          path: /{proxy+}
-          method: ANY
+      - http:
+          path: /user/login
+          method: POST
           cors: true
+      # - http: 
+      #     path: /{proxy+}
+      #     method: ANY
+      #     cors: true

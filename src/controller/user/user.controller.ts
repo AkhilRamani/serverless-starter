@@ -1,4 +1,5 @@
-import { UserModel } from "../../schema";
+import { User, UserModel } from "../../schema";
+import _ from 'lodash'
 import { UserRepo } from "../../repository";
 import { lambdaHandler, formateResponse} from '../../helpers'
 
@@ -11,6 +12,13 @@ export class UserController{
     })
 
     static getUser = lambdaHandler(async (req) => UserRepo.getOne(req.params.id))
+
+    static loginUser = lambdaHandler(async req => {
+        const {email, password} = _.pick(req.body, ['email', 'password'])
+        const token = await UserRepo.findByCredentials(email, password)
+        // console.log(user)
+        return formateResponse({token})
+    })
 
     static deleteUser = lambdaHandler(async (req) => {
         const id: string = req.params.id

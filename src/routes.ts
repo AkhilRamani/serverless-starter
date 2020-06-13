@@ -24,5 +24,6 @@ export class Routes{
     private userRoutes(userRouter: Router){
         userRouter.post('/save', UserController.createUser)
         userRouter.delete('/delete/:id', UserController.deleteUser)
+        userRouter.post('/login', UserController.loginUser)
     }
 }
